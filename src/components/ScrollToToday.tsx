@@ -8,8 +8,21 @@ export function ScrollToToday() {
     const target = container?.querySelector<HTMLElement>("[data-today-col]");
     if (!container || !target) return;
 
-    const offset = target.offsetLeft - (container.clientWidth - target.clientWidth) / 2;
-    container.scrollTo({ left: Math.max(0, offset), behavior: "auto" });
+    const scrollToToday = () => {
+      const stickyCol = container.querySelector<HTMLElement>("thead th.sticky");
+      const stickyWidth = stickyCol?.offsetWidth ?? 0;
+      const containerLeft = container.getBoundingClientRect().left;
+      const targetLeft = target.getBoundingClientRect().left;
+      const targetWidth = target.offsetWidth;
+      const visibleWidth = container.clientWidth - stickyWidth;
+      const currentOffset = targetLeft - containerLeft + container.scrollLeft;
+      const offset = currentOffset - stickyWidth - (visibleWidth - targetWidth) / 2;
+      container.scrollTo({ left: Math.max(0, offset), behavior: "auto" });
+    };
+
+    scrollToToday();
+    const raf = requestAnimationFrame(scrollToToday);
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   return null;

@@ -216,39 +216,6 @@ export default async function BoardPage({
         </table>
       </div>
 
-      <section className="mt-6">
-        <h2 className="eyebrow mb-2 px-1">Totals this period</h2>
-        <div className="grid grid-cols-5 gap-2">
-          {profiles.map((p) => {
-            const c = colorClasses[getColor(p.color_theme)];
-            const total = checkIns.filter((ci) => ci.profile_id === p.id).length;
-            const possible = habits.length * days;
-            const pct = possible === 0 ? 0 : Math.round((total / possible) * 100);
-            return (
-              <div
-                key={p.id}
-                className="rounded-[var(--radius-lg)] border border-[color:var(--border)] bg-[color:var(--surface)] p-2.5 text-center shadow-[var(--shadow-xs)]"
-              >
-                <Avatar
-                  name={p.name}
-                  avatarUrl={p.avatar_url}
-                  color={p.color_theme}
-                  size={36}
-                  className="mx-auto"
-                />
-                <div className="text-[10px] mt-1 font-medium truncate">{p.name}</div>
-                <div className={cn("font-display text-[15px] font-semibold tabular-nums mt-0.5", c.text)}>
-                  {pct}%
-                </div>
-                <div className="text-[10px] text-[color:var(--muted)] tabular-nums">
-                  {total}/{possible}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
     </main>
   );
 }
