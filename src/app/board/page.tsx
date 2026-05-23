@@ -134,7 +134,7 @@ export default async function BoardPage({
                     key={iso}
                     data-today-col={isToday ? "" : undefined}
                     className={cn(
-                      "px-3 py-2 text-center font-semibold text-xs border-b border-[color:var(--border)] min-w-[190px] snap-start",
+                      "px-3 py-2 text-center font-semibold text-xs border-b border-[color:var(--border)] min-w-[190px] snap-center",
                       isToday && "bg-[color:var(--accent-soft)]"
                     )}
                   >
