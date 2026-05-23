@@ -118,7 +118,7 @@ export default async function BoardPage({
 
       <div
         data-board-scroll
-        className="rounded-[var(--radius-lg)] border border-[color:var(--border)] bg-[color:var(--surface)] overflow-x-auto shadow-[var(--shadow-xs)]"
+        className="rounded-[var(--radius-lg)] border border-[color:var(--border)] bg-[color:var(--surface)] overflow-x-auto shadow-[var(--shadow-xs)] snap-x snap-mandatory scroll-pl-[180px] md:snap-none md:scroll-pl-0"
       >
         <ScrollToToday key={days} />
         <table className="w-full border-collapse">
@@ -134,7 +134,7 @@ export default async function BoardPage({
                     key={iso}
                     data-today-col={isToday ? "" : undefined}
                     className={cn(
-                      "px-3 py-2 text-center font-semibold text-xs border-b border-[color:var(--border)] min-w-[190px]",
+                      "px-3 py-2 text-center font-semibold text-xs border-b border-[color:var(--border)] min-w-[190px] snap-start",
                       isToday && "bg-[color:var(--accent-soft)]"
                     )}
                   >
