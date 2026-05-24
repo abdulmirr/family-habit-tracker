@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { Users, Settings2, LayoutGrid, ChevronRight } from "lucide-react";
+import { Settings2, ChevronRight } from "lucide-react";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import { getProfiles, getHabitsForProfile, getTodayCheckIns } from "@/lib/data";
 import { Avatar } from "@/components/Avatar";
 import { ProgressRing } from "@/components/ProgressRing";
 import { ConfigNotice } from "@/components/ConfigNotice";
+import { TopTabs } from "@/components/TopTabs";
 import { cardClassName } from "@/components/ui/Card";
 import { slugify } from "@/lib/utils";
 import { colorClasses, getColor } from "@/lib/icons";
@@ -44,8 +45,10 @@ export default async function HomePage() {
   const monthDay = now.toLocaleDateString("en-US", { month: "long", day: "numeric" });
 
   return (
-    <main className="flex-1 w-full max-w-md mx-auto px-5 pt-10 pb-20">
-      <header className="mb-8">
+    <main className="flex-1 w-full max-w-md mx-auto px-5 pt-6 pb-20">
+      <TopTabs active="check" />
+
+      <header className="mb-7">
         <p className="eyebrow">{weekday}</p>
         <h1 className="font-display text-[2.5rem] font-semibold leading-[1.02] mt-1.5 tracking-tight">
           {monthDay}
@@ -97,33 +100,15 @@ export default async function HomePage() {
         })}
       </ul>
 
-      <div className="my-8 h-px bg-[color:var(--border)]" />
-
-      <nav className="grid grid-cols-3 gap-2">
-        <NavTile href="/board" label="Board" Icon={LayoutGrid} />
-        <NavTile href="/leaderboard" label="Leaderboard" Icon={Users} />
-        <NavTile href="/manage" label="Manage" Icon={Settings2} />
-      </nav>
+      <div className="mt-8 flex justify-center">
+        <Link
+          href="/manage"
+          className="inline-flex items-center gap-1.5 text-[12px] font-medium text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
+        >
+          <Settings2 size={14} />
+          Manage habits
+        </Link>
+      </div>
     </main>
-  );
-}
-
-function NavTile({
-  href,
-  label,
-  Icon,
-}: {
-  href: string;
-  label: string;
-  Icon: React.ComponentType<{ size?: number; className?: string }>;
-}) {
-  return (
-    <Link
-      href={href}
-      className={`${cardClassName("interactive")} flex flex-col items-center justify-center gap-1.5 py-4 text-[13px] font-medium`}
-    >
-      <Icon size={18} className="text-[color:var(--foreground-soft,var(--foreground))]" />
-      {label}
-    </Link>
   );
 }

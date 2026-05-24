@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronLeft, Flame, Crown } from "lucide-react";
+import { Flame, Crown } from "lucide-react";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import {
   getProfiles,
@@ -8,6 +8,7 @@ import {
 } from "@/lib/data";
 import { ConfigNotice } from "@/components/ConfigNotice";
 import { Avatar } from "@/components/Avatar";
+import { TopTabs } from "@/components/TopTabs";
 import { computeStreak } from "@/lib/streaks";
 import { colorClasses, getColor } from "@/lib/icons";
 import { slugify, daysAgoISO } from "@/lib/utils";
@@ -56,33 +57,14 @@ export default async function LeaderboardPage() {
 
   return (
     <main className="flex-1 w-full max-w-md mx-auto px-5 pt-6 pb-16">
-      <header className="flex items-center gap-3 mb-6">
-        <Link
-          href="/"
-          className="-ml-2 p-2 rounded-[var(--radius-sm)] text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
-          aria-label="Back"
-        >
-          <ChevronLeft size={22} />
-        </Link>
-        <div className="flex-1 min-w-0">
-          <div className="font-display font-semibold text-[19px] leading-tight tracking-tight">
-            Leaderboard
-          </div>
-          <p className="eyebrow mt-0.5">Last 7 days</p>
-        </div>
-      </header>
+      <TopTabs active="leaderboard" />
 
-      <div className="mb-5 inline-flex rounded-[var(--radius-md)] border border-[color:var(--border)] bg-[color:var(--surface)] p-1 text-[13px] shadow-[var(--shadow-xs)]">
-        <Link
-          href="/board"
-          className="px-3 py-1.5 rounded-[var(--radius-sm)] font-medium text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
-        >
-          Board
-        </Link>
-        <span className="px-3 py-1.5 rounded-[var(--radius-sm)] font-semibold bg-[color:var(--accent)] text-[color:var(--accent-fg)] shadow-[var(--shadow-button)]">
+      <header className="mb-5">
+        <div className="font-display font-semibold text-[19px] leading-tight tracking-tight">
           Leaderboard
-        </span>
-      </div>
+        </div>
+        <p className="eyebrow mt-0.5">Last 7 days</p>
+      </header>
 
       <section className="grid grid-cols-2 gap-2.5 mb-6">
         <HighlightCard
