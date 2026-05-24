@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Bricolage_Grotesque, Geist_Mono } from "next/font/google";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import "./globals.css";
 
 const inter = Inter({
@@ -53,9 +52,6 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
       </head>
       <body className="min-h-full flex flex-col">
-        <div className="fixed top-3 right-4 z-40">
-          <ThemeToggle />
-        </div>
         {children}
       </body>
     </html>

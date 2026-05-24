@@ -26,7 +26,7 @@ export function ThemeToggle() {
 
   // Avoid flicker / hydration mismatch: render a placeholder until mounted.
   if (!mounted) {
-    return <div className="w-9 h-9" aria-hidden />;
+    return <div className="w-8 h-8 shrink-0" aria-hidden />;
   }
 
   const Icon = theme === "dark" ? Sun : Moon;
@@ -38,7 +38,7 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label={label}
       title={label}
-      className="w-9 h-9 inline-flex items-center justify-center rounded-full border border-[color:var(--border)] bg-[color:var(--surface)]/80 backdrop-blur text-[color:var(--foreground)] shadow-[var(--shadow-xs)] hover:shadow-[var(--shadow-sm)] hover:border-[color:var(--border-strong)] active:translate-y-px transition-all"
+      className="shrink-0 w-8 h-8 inline-flex items-center justify-center rounded-[var(--radius-sm)] text-[color:var(--muted)] hover:text-[color:var(--foreground)] hover:bg-[color:var(--surface-2)] transition-colors"
     >
       <Icon size={15} />
     </button>

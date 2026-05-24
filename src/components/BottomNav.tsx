@@ -18,8 +18,8 @@ export function BottomNav({ name }: Props) {
   ];
 
   return (
-    <nav className="fixed bottom-0 inset-x-0 z-30 border-t border-[color:var(--border)] bg-[color:var(--surface)]/95 backdrop-blur supports-[backdrop-filter]:bg-[color:var(--surface)]/75">
-      <ul className="max-w-md mx-auto grid grid-cols-4 px-2 pt-1.5 pb-[max(env(safe-area-inset-bottom),0.5rem)]">
+    <nav className="fixed bottom-0 inset-x-0 z-30 border-t-2 border-[color:var(--border-strong)] bg-[color:var(--surface)]/95 backdrop-blur supports-[backdrop-filter]:bg-[color:var(--surface)]/85">
+      <ul className="max-w-md mx-auto grid grid-cols-4 gap-1.5 px-3 pt-2 pb-[max(env(safe-area-inset-bottom),0.6rem)]">
         {items.map(({ href, label, icon: Icon }) => {
           const active = pathname === href;
           return (
@@ -27,20 +27,20 @@ export function BottomNav({ name }: Props) {
               <Link
                 href={href}
                 className={cn(
-                  "relative flex flex-col items-center justify-center gap-1 py-1.5 text-[11px] font-medium transition-colors",
+                  "relative flex flex-col items-center justify-center gap-0.5 py-1.5 text-[11px] font-bold transition-all",
+                  "rounded-[var(--radius-pixel)] border-2",
                   active
-                    ? "text-[color:var(--accent)]"
-                    : "text-[color:var(--muted)] hover:text-[color:var(--foreground-soft,var(--foreground))]"
+                    ? "text-[color:var(--accent-fg)] bg-[color:var(--accent)] border-[color:var(--border-strong)] shadow-[var(--shadow-pixel-pressed)]"
+                    : "text-[color:var(--muted)] border-transparent hover:text-[color:var(--foreground)] hover:bg-[color:var(--surface-2)]"
                 )}
+                style={
+                  active
+                    ? { boxShadow: "inset 0 -2px 0 rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.18)" }
+                    : undefined
+                }
               >
-                <Icon size={20} strokeWidth={active ? 2.4 : 1.8} />
-                <span className={cn(active && "tracking-[0.02em]")}>{label}</span>
-                {active && (
-                  <span
-                    aria-hidden
-                    className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-6 h-[2px] rounded-full bg-[color:var(--accent)]"
-                  />
-                )}
+                <Icon size={19} strokeWidth={active ? 2.6 : 2} />
+                <span className={cn("tracking-[0.04em]", active && "tracking-[0.08em]")}>{label}</span>
               </Link>
             </li>
           );

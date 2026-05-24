@@ -10,7 +10,9 @@ import {
 import { ConfigNotice } from "@/components/ConfigNotice";
 import { BottomNav } from "@/components/BottomNav";
 import { Avatar } from "@/components/Avatar";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { CalendarHeatmap } from "@/components/CalendarHeatmap";
+import { PixelPanel } from "@/components/PixelPanel";
 import { computeStreak, computeLongestStreak } from "@/lib/streaks";
 import { colorClasses, getColor, getIcon } from "@/lib/icons";
 import { slugify, daysAgoISO } from "@/lib/utils";
@@ -53,42 +55,58 @@ export default async function StatsPage({ params }: { params: Promise<{ name: st
   );
 
   const currentMonthLabel = new Date().toLocaleDateString("en-US", {
-    month: "long",
+    month: "short",
     year: "numeric",
   });
+  const profileColor = colorClasses[getColor(profile.color_theme)];
 
   return (
     <>
-      <main className="flex-1 w-full max-w-md mx-auto px-5 pt-6 pb-28">
-        <header className="flex items-center gap-3 mb-7">
+      <main className="flex-1 w-full max-w-md mx-auto px-5 pt-6 pb-24">
+        <header className="mb-4 flex items-center gap-3">
           <Link
             href={`/p/${name}`}
-            className="-ml-2 p-2 rounded-[var(--radius-sm)] text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
+            className="-ml-2 p-2 rounded-[var(--radius-pixel)] text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
             aria-label="Back"
           >
             <ChevronLeft size={22} />
           </Link>
-          <Avatar name={profile.name} avatarUrl={profile.avatar_url} color={profile.color_theme} size={44} />
+
+          <div className="shrink-0 rounded-[var(--radius-pixel)] border-2 border-[color:var(--border-strong)] bg-[color:var(--surface-2)] p-[3px] shadow-[var(--shadow-pixel)]">
+            <Avatar
+              name={profile.name}
+              avatarUrl={profile.avatar_url}
+              color={profile.color_theme}
+              size={36}
+              className="rounded-[3px]"
+            />
+          </div>
+
           <div className="flex-1 min-w-0">
-            <div className="font-display font-semibold text-[19px] leading-tight tracking-tight">
+            <p className="pixel-eyebrow">Player stats</p>
+            <div className="font-display font-semibold text-[19px] leading-[1.05] tracking-tight">
               {profile.name}
             </div>
-            <p className="eyebrow mt-0.5">Stats &amp; streaks</p>
           </div>
+          <ThemeToggle />
         </header>
 
-        <section className="grid grid-cols-3 gap-2 mb-8">
-          <StatBlock label="7-day" value={`${rate7}%`} />
-          <StatBlock label="30-day" value={`${rate30}%`} />
-          <StatBlock label="Best streak" value={`${longestStreakOverall}`} icon={<Flame size={13} />} />
+        <section className="grid grid-cols-3 gap-1.5 mb-5">
+          <StatBlock label="7d" value={`${rate7}`} suffix="%" />
+          <StatBlock label="30d" value={`${rate30}`} suffix="%" />
+          <StatBlock
+            label="Best"
+            value={`${longestStreakOverall}`}
+            icon={<Flame size={11} strokeWidth={2.4} className={profileColor.text} />}
+          />
         </section>
 
         <section>
-          <div className="flex items-baseline justify-between px-1 mb-3">
-            <h2 className="eyebrow">Habits</h2>
-            <span className="eyebrow opacity-70">{currentMonthLabel}</span>
+          <div className="flex items-baseline justify-between px-1 mb-2">
+            <h2 className="pixel-eyebrow">Habit log</h2>
+            <span className="pixel-eyebrow opacity-70">{currentMonthLabel}</span>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {habits.map((h) => {
               const dates = checksByHabit.get(h.id) ?? [];
               const streak = computeStreak(dates);
@@ -96,19 +114,21 @@ export default async function StatsPage({ params }: { params: Promise<{ name: st
               const Icon = getIcon(h.icon);
               const c = colorClasses[getColor(h.color)];
               return (
-                <div
-                  key={h.id}
-                  className="rounded-[var(--radius-lg)] border border-[color:var(--border)] bg-[color:var(--surface)] p-4 shadow-[var(--shadow-xs)]"
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className={`w-10 h-10 rounded-[var(--radius-md)] flex items-center justify-center ${c.bgSoft}`}>
-                      <Icon size={20} className={c.text} />
+                <PixelPanel key={h.id} className="p-2.5">
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <div
+                      className={`w-8 h-8 rounded-[var(--radius-pixel)] border-2 border-[color:var(--border-strong)] flex items-center justify-center shrink-0 ${c.bgSoft}`}
+                    >
+                      <Icon size={16} className={c.text} strokeWidth={2.4} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-display font-semibold text-[15px] leading-tight">{h.name}</div>
-                      <div className="text-[12px] text-[color:var(--muted)] flex items-center gap-2 mt-0.5 tabular-nums">
-                        <span className={`inline-flex items-center gap-1 ${c.text}`}>
-                          <Flame size={11} /> {streak}
+                      <div className="font-display font-semibold text-[13.5px] leading-tight truncate">
+                        {h.name}
+                      </div>
+                      <div className="text-[11px] text-[color:var(--muted)] flex items-center gap-1.5 mt-0.5 tabular-nums">
+                        <span className={`inline-flex items-center gap-0.5 font-semibold ${c.text}`}>
+                          <Flame size={10} strokeWidth={2.4} />
+                          {streak}d
                         </span>
                         <span className="opacity-40">·</span>
                         <span>best {longest}</span>
@@ -116,9 +136,14 @@ export default async function StatsPage({ params }: { params: Promise<{ name: st
                     </div>
                   </div>
                   <CalendarHeatmap completedDates={dates} color={h.color} />
-                </div>
+                </PixelPanel>
               );
             })}
+            {habits.length === 0 && (
+              <PixelPanel padded className="text-center text-[12px] text-[color:var(--muted)]">
+                No habits yet — add some from the Habits tab.
+              </PixelPanel>
+            )}
           </div>
         </section>
       </main>
@@ -130,20 +155,26 @@ export default async function StatsPage({ params }: { params: Promise<{ name: st
 function StatBlock({
   label,
   value,
+  suffix,
   icon,
 }: {
   label: string;
   value: string;
+  suffix?: string;
   icon?: React.ReactNode;
 }) {
   return (
-    <div className="rounded-[var(--radius-lg)] border border-[color:var(--border)] bg-[color:var(--surface)] py-4 px-3 text-center shadow-[var(--shadow-xs)]">
-      <div className="eyebrow">{label}</div>
-      <div className="font-display text-[26px] font-semibold mt-1.5 tabular-nums tracking-tight flex items-center justify-center gap-1 leading-none">
+    <PixelPanel className="py-2 px-1.5 text-center">
+      <div className="pixel-eyebrow text-[9px]">{label}</div>
+      <div className="font-display text-[20px] font-semibold mt-0.5 tabular-nums tracking-tight flex items-baseline justify-center gap-0.5 leading-none">
         {icon}
-        {value}
+        <span>{value}</span>
+        {suffix && (
+          <span className="text-[10px] text-[color:var(--muted)] font-medium tracking-normal">
+            {suffix}
+          </span>
+        )}
       </div>
-    </div>
+    </PixelPanel>
   );
 }
-

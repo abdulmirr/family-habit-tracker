@@ -33,6 +33,14 @@
   /* Chunky 3D button — the only "game" depth cue in the foundation */
   --shadow-button: 0 1px 0 0 rgba(24, 24, 27, 0.04), inset 0 -2px 0 rgba(0, 0, 0, 0.16);
   --shadow-button-active: inset 0 1px 0 rgba(0, 0, 0, 0.12);
+
+  /* Pixel-game panels — used only inside the per-user pages so they feel like
+     a Pokémon/Stardew HUD nested inside the modern family shell. */
+  --radius-pixel: 4px;
+  --pixel-border: #1f1d1a;
+  --shadow-pixel: 0 3px 0 0 rgba(24, 24, 27, 0.20);
+  --shadow-pixel-strong: 0 4px 0 0 rgba(24, 24, 27, 0.22);
+  --shadow-pixel-pressed: 0 1px 0 0 rgba(24, 24, 27, 0.18);
 }
 
 @theme inline {
@@ -70,6 +78,11 @@
 
   --shadow-button: 0 1px 0 0 rgba(0, 0, 0, 0.5), inset 0 -2px 0 rgba(0, 0, 0, 0.4);
   --shadow-button-active: inset 0 1px 0 rgba(0, 0, 0, 0.35);
+
+  --pixel-border: #efece4;
+  --shadow-pixel: 0 3px 0 0 rgba(0, 0, 0, 0.55);
+  --shadow-pixel-strong: 0 4px 0 0 rgba(0, 0, 0, 0.65);
+  --shadow-pixel-pressed: 0 1px 0 0 rgba(0, 0, 0, 0.55);
 }
 
 html, body {
@@ -113,4 +126,41 @@ body {
 @keyframes confetti-fall {
   0%   { transform: translateY(-20px) rotate(0deg);   opacity: 1; }
   100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* Crisp pixel art rendering — no anti-aliasing for nested SVG/canvas */
+.pixel-art {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  shape-rendering: crispEdges;
+}
+
+/* Subtle scanline texture for inside pixel HUD panels */
+.pixel-scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.0) 0px,
+    rgba(0, 0, 0, 0.0) 2px,
+    rgba(0, 0, 0, 0.025) 2px,
+    rgba(0, 0, 0, 0.025) 3px
+  );
+}
+:root[data-theme="dark"] .pixel-scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.0) 0px,
+    rgba(255, 255, 255, 0.0) 2px,
+    rgba(255, 255, 255, 0.03) 2px,
+    rgba(255, 255, 255, 0.03) 3px
+  );
+}
+
+/* Pixel "eyebrow" — chunkier, tighter version of .eyebrow for the per-user game pages */
+.pixel-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  font-feature-settings: "tnum" 1;
 }

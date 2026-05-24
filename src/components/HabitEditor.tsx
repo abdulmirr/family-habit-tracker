@@ -5,6 +5,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { ICON_OPTIONS, COLOR_OPTIONS, colorClasses, getIcon } from "@/lib/icons";
 import { createHabitAction, deleteHabitAction } from "@/app/actions";
 import { Button } from "@/components/ui/Button";
+import { PixelPanel } from "@/components/PixelPanel";
 import type { Habit } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -38,11 +39,11 @@ export function HabitEditor({ habits, ownerId, title, subtitle }: Props) {
 
   return (
     <div>
-      <div className="mb-3 flex items-end justify-between">
-        <div>
-          <h2 className="font-display font-semibold text-[17px] leading-tight">{title}</h2>
+      <div className="mb-3 flex items-end justify-between gap-2">
+        <div className="min-w-0">
+          <h2 className="pixel-eyebrow mb-0.5">{title}</h2>
           {subtitle && (
-            <p className="text-[12px] text-[color:var(--muted)] mt-0.5 max-w-xs">{subtitle}</p>
+            <p className="text-[12px] text-[color:var(--muted)] max-w-xs">{subtitle}</p>
           )}
         </div>
         {!adding && (
@@ -57,42 +58,49 @@ export function HabitEditor({ habits, ownerId, title, subtitle }: Props) {
           const Icon = getIcon(h.icon);
           const c = colorClasses[(h.color as keyof typeof colorClasses) ?? "slate"] ?? colorClasses.slate;
           return (
-            <li
-              key={h.id}
-              className="flex items-center gap-3 rounded-[var(--radius-md)] border border-[color:var(--border)] bg-[color:var(--surface)] p-3 shadow-[var(--shadow-xs)]"
-            >
-              <div className={`w-10 h-10 rounded-[var(--radius-sm)] flex items-center justify-center ${c.bgSoft}`}>
-                <Icon size={20} className={c.text} />
-              </div>
-              <div className="flex-1 min-w-0 font-medium truncate">{h.name}</div>
-              <button
-                onClick={() => remove(h.id)}
-                disabled={pending}
-                aria-label={`Remove ${h.name}`}
-                className="p-2 rounded-[var(--radius-sm)] text-[color:var(--muted)] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
-              >
-                <Trash2 size={17} />
-              </button>
+            <li key={h.id}>
+              <PixelPanel className="flex items-center gap-3 p-3">
+                <div
+                  className={`w-10 h-10 rounded-[var(--radius-pixel)] border-2 border-[color:var(--border-strong)] flex items-center justify-center ${c.bgSoft}`}
+                >
+                  <Icon size={20} className={c.text} strokeWidth={2.2} />
+                </div>
+                <div className="flex-1 min-w-0 font-display font-semibold text-[15px] truncate">
+                  {h.name}
+                </div>
+                <button
+                  onClick={() => remove(h.id)}
+                  disabled={pending}
+                  aria-label={`Remove ${h.name}`}
+                  className="p-2 rounded-[var(--radius-pixel)] text-[color:var(--muted)] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+                >
+                  <Trash2 size={17} />
+                </button>
+              </PixelPanel>
             </li>
           );
         })}
         {habits.length === 0 && (
-          <li className="text-sm text-[color:var(--muted)] px-1">No habits yet.</li>
+          <li>
+            <PixelPanel padded className="text-center text-[13px] text-[color:var(--muted)]">
+              No personal habits yet.
+            </PixelPanel>
+          </li>
         )}
       </ul>
 
       {adding && (
-        <div className="rounded-[var(--radius-lg)] border border-[color:var(--border)] bg-[color:var(--surface)] p-4 space-y-4 shadow-[var(--shadow-sm)]">
+        <PixelPanel padded className="space-y-4">
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Habit name"
-            className="w-full rounded-[var(--radius-md)] border border-[color:var(--border)] bg-transparent px-3 py-2.5 text-[15px] focus:outline-none focus:ring-2 focus:ring-[color:var(--ring)] focus:border-[color:var(--accent)] transition"
+            className="w-full rounded-[var(--radius-pixel)] border-2 border-[color:var(--border-strong)] bg-[color:var(--surface)] px-3 py-2.5 text-[15px] focus:outline-none focus:ring-2 focus:ring-[color:var(--ring)] focus:border-[color:var(--accent)] transition"
             autoFocus
           />
 
           <div>
-            <div className="eyebrow mb-2">Icon</div>
+            <div className="pixel-eyebrow mb-2">Icon</div>
             <div className="grid grid-cols-6 gap-2">
               {ICON_OPTIONS.map((opt) => {
                 const Icon = getIcon(opt.key);
@@ -103,14 +111,14 @@ export function HabitEditor({ habits, ownerId, title, subtitle }: Props) {
                     type="button"
                     onClick={() => setIcon(opt.key)}
                     className={cn(
-                      "aspect-square rounded-[var(--radius-md)] border flex items-center justify-center transition-colors",
+                      "aspect-square rounded-[var(--radius-pixel)] border-2 flex items-center justify-center transition-colors",
                       active
-                        ? "border-[color:var(--accent)] bg-[color:var(--accent-soft)] text-[color:var(--accent)]"
-                        : "border-[color:var(--border)] text-[color:var(--foreground-soft,var(--foreground))] hover:border-[color:var(--border-strong)]"
+                        ? "border-[color:var(--accent)] bg-[color:var(--accent-soft)] text-[color:var(--accent)] shadow-[var(--shadow-pixel-pressed)]"
+                        : "border-[color:var(--border-strong)] bg-[color:var(--surface)] text-[color:var(--foreground-soft,var(--foreground))] hover:border-[color:var(--foreground)]/60"
                     )}
                     aria-label={opt.label}
                   >
-                    <Icon size={18} />
+                    <Icon size={18} strokeWidth={2.2} />
                   </button>
                 );
               })}
@@ -118,7 +126,7 @@ export function HabitEditor({ habits, ownerId, title, subtitle }: Props) {
           </div>
 
           <div>
-            <div className="eyebrow mb-2">Color</div>
+            <div className="pixel-eyebrow mb-2">Color</div>
             <div className="flex flex-wrap gap-2">
               {COLOR_OPTIONS.map((col) => {
                 const c = colorClasses[col];
@@ -129,12 +137,13 @@ export function HabitEditor({ habits, ownerId, title, subtitle }: Props) {
                     type="button"
                     onClick={() => setColor(col)}
                     className={cn(
-                      "w-8 h-8 rounded-full transition-transform",
+                      "w-9 h-9 rounded-[var(--radius-pixel)] border-2 border-[color:var(--border-strong)] transition-transform",
                       c.bg,
                       active
-                        ? "ring-2 ring-offset-2 ring-offset-[color:var(--surface)] ring-[color:var(--foreground)] scale-110"
+                        ? "scale-110 shadow-[var(--shadow-pixel)] ring-2 ring-offset-2 ring-offset-[color:var(--surface)] ring-[color:var(--foreground)]"
                         : "hover:scale-105"
                     )}
+                    style={{ boxShadow: active ? undefined : "inset 0 -2px 0 rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.22)" }}
                     aria-label={col}
                   />
                 );
@@ -156,7 +165,7 @@ export function HabitEditor({ habits, ownerId, title, subtitle }: Props) {
               Cancel
             </Button>
           </div>
-        </div>
+        </PixelPanel>
       )}
     </div>
   );

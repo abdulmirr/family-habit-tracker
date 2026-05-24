@@ -37,17 +37,17 @@ export function CalendarHeatmap({ completedDates, color }: Props) {
 
   return (
     <div>
-      <div className="grid grid-cols-7 gap-1 mb-1.5">
+      <div className="grid grid-cols-7 gap-[2px] mb-1">
         {WEEKDAY_LABELS.map((d, i) => (
           <div
             key={i}
-            className="text-[10px] font-semibold tracking-[0.08em] text-[color:var(--muted)] text-center"
+            className="text-[9px] font-bold tracking-[0.1em] text-[color:var(--muted)]/70 text-center"
           >
             {d}
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-7 gap-1">
+      <div className="grid grid-cols-7 gap-[2px]">
         {cells.map((cell, i) => {
           if (!cell) return <div key={i} className="aspect-square" />;
           return (
@@ -55,15 +55,20 @@ export function CalendarHeatmap({ completedDates, color }: Props) {
               key={i}
               title={`${cell.iso}${cell.checked ? " ✓" : ""}`}
               className={cn(
-                "aspect-square rounded-[6px] flex items-center justify-center text-[10px] font-medium tabular-nums transition-colors",
+                "aspect-square rounded-[2px] flex items-center justify-center text-[9px] font-semibold tabular-nums leading-none",
                 cell.checked
-                  ? cn(c.bg, "text-white")
+                  ? cn(c.bg, "text-white/90")
                   : cell.isFuture
-                    ? "bg-transparent text-[color:var(--muted)]/40"
-                    : "bg-[color:var(--border)] text-[color:var(--muted)]",
-                cell.isToday && !cell.checked && "ring-[1.5px] ring-[color:var(--foreground)]/40",
-                cell.isToday && cell.checked && "ring-[1.5px] ring-offset-1 ring-offset-[color:var(--surface)] ring-[color:var(--foreground)]/40"
+                    ? "bg-transparent text-[color:var(--muted)]/30 border border-[color:var(--border)]"
+                    : "bg-[color:var(--surface-2)] text-[color:var(--muted)]/60 border border-[color:var(--border)]",
+                cell.isToday && !cell.checked && "border-[1.5px] border-[color:var(--foreground)] text-[color:var(--foreground)]",
+                cell.isToday && cell.checked && "ring-[1.5px] ring-[color:var(--foreground)]/40"
               )}
+              style={
+                cell.checked
+                  ? { boxShadow: "inset 0 -1px 0 rgba(0,0,0,0.22)" }
+                  : undefined
+              }
             >
               {cell.day}
             </div>

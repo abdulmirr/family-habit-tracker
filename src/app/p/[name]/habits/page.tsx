@@ -7,6 +7,8 @@ import { ConfigNotice } from "@/components/ConfigNotice";
 import { BottomNav } from "@/components/BottomNav";
 import { HabitEditor } from "@/components/HabitEditor";
 import { Avatar } from "@/components/Avatar";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { PixelPanel } from "@/components/PixelPanel";
 import { slugify } from "@/lib/utils";
 import { getIcon, colorClasses, getColor } from "@/lib/icons";
 
@@ -28,21 +30,32 @@ export default async function HabitsPage({ params }: { params: Promise<{ name: s
   return (
     <>
       <main className="flex-1 w-full max-w-md mx-auto px-5 pt-6 pb-28">
-        <header className="flex items-center gap-3 mb-6">
+        <header className="mb-5 flex items-center gap-3">
           <Link
             href={`/p/${name}`}
-            className="-ml-2 p-2 rounded-[var(--radius-sm)] text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
+            className="-ml-2 p-2 rounded-[var(--radius-pixel)] text-[color:var(--muted)] hover:text-[color:var(--foreground)] transition-colors"
             aria-label="Back"
           >
             <ChevronLeft size={22} />
           </Link>
-          <Avatar name={profile.name} avatarUrl={profile.avatar_url} color={profile.color_theme} size={44} />
+
+          <div className="shrink-0 rounded-[var(--radius-pixel)] border-2 border-[color:var(--border-strong)] bg-[color:var(--surface-2)] p-[3px] shadow-[var(--shadow-pixel)]">
+            <Avatar
+              name={profile.name}
+              avatarUrl={profile.avatar_url}
+              color={profile.color_theme}
+              size={42}
+              className="rounded-[3px]"
+            />
+          </div>
+
           <div className="flex-1 min-w-0">
-            <div className="font-display font-semibold text-[19px] leading-tight tracking-tight">
+            <p className="pixel-eyebrow">Inventory</p>
+            <div className="font-display font-semibold text-[22px] leading-[1.05] tracking-tight">
               {profile.name}&rsquo;s habits
             </div>
-            <p className="eyebrow mt-0.5">Personal extras only</p>
           </div>
+          <ThemeToggle />
         </header>
 
         <section className="mb-8">
@@ -55,20 +68,23 @@ export default async function HabitsPage({ params }: { params: Promise<{ name: s
         </section>
 
         <section>
-          <h2 className="eyebrow px-1 mb-3">Family habits (shared)</h2>
+          <h2 className="pixel-eyebrow px-1 mb-3">Family habits (shared)</h2>
           <ul className="space-y-2">
             {shared.map((h) => {
               const Icon = getIcon(h.icon);
               const c = colorClasses[getColor(h.color)];
               return (
-                <li
-                  key={h.id}
-                  className="flex items-center gap-3 rounded-[var(--radius-md)] border border-[color:var(--border)] bg-[color:var(--surface)] p-3 shadow-[var(--shadow-xs)]"
-                >
-                  <div className={`w-10 h-10 rounded-[var(--radius-sm)] flex items-center justify-center ${c.bgSoft}`}>
-                    <Icon size={20} className={c.text} />
-                  </div>
-                  <div className="flex-1 min-w-0 font-medium truncate">{h.name}</div>
+                <li key={h.id}>
+                  <PixelPanel className="flex items-center gap-3 p-3">
+                    <div
+                      className={`w-10 h-10 rounded-[var(--radius-pixel)] border-2 border-[color:var(--border-strong)] flex items-center justify-center ${c.bgSoft}`}
+                    >
+                      <Icon size={20} className={c.text} strokeWidth={2.2} />
+                    </div>
+                    <div className="flex-1 min-w-0 font-display font-semibold text-[15px] truncate">
+                      {h.name}
+                    </div>
+                  </PixelPanel>
                 </li>
               );
             })}
