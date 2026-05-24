@@ -13,10 +13,9 @@ export function ScrollToToday() {
       const stickyWidth = stickyCol?.offsetWidth ?? 0;
       const containerLeft = container.getBoundingClientRect().left;
       const targetLeft = target.getBoundingClientRect().left;
-      const targetWidth = target.offsetWidth;
-      const visibleWidth = container.clientWidth - stickyWidth;
       const currentOffset = targetLeft - containerLeft + container.scrollLeft;
-      const offset = currentOffset - stickyWidth - (visibleWidth - targetWidth) / 2;
+      // Align today flush to the right of the sticky habit column (snap-start)
+      const offset = currentOffset - stickyWidth;
       container.scrollTo({ left: Math.max(0, offset), behavior: "auto" });
     };
 

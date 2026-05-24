@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 type Tab = "board" | "check" | "leaderboard";
 
 const TABS: { key: Tab; label: string; href: string }[] = [
-  { key: "board", label: "Board", href: "/board" },
-  { key: "check", label: "Check", href: "/" },
+  { key: "board", label: "Table", href: "/board" },
+  { key: "check", label: "Check", href: "/check" },
   { key: "leaderboard", label: "Leaderboard", href: "/leaderboard" },
 ];
 

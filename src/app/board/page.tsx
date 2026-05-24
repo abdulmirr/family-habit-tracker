@@ -11,6 +11,7 @@ import { ConfigNotice } from "@/components/ConfigNotice";
 import { Avatar } from "@/components/Avatar";
 import { ScrollToToday } from "@/components/ScrollToToday";
 import { TopTabs } from "@/components/TopTabs";
+import { PixelCheck } from "@/components/PixelCheck";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -58,7 +59,7 @@ export default async function BoardPage({
       <div className="mb-4 flex items-center justify-between gap-3">
         <div className="min-w-0">
           <h1 className="font-display font-semibold text-[28px] leading-tight tracking-tight">
-            Family Board
+            Family Table
           </h1>
         </div>
 
@@ -82,13 +83,13 @@ export default async function BoardPage({
 
       <div
         data-board-scroll
-        className="rounded-[var(--radius-lg)] border border-[color:var(--border)] bg-[color:var(--surface)] overflow-x-auto shadow-[var(--shadow-xs)] snap-x snap-mandatory scroll-pl-[130px] md:snap-none md:scroll-pl-0"
+        className="rounded-[var(--radius-lg)] border border-[color:var(--border)] bg-[color:var(--surface)] overflow-x-auto shadow-[var(--shadow-xs)] snap-x snap-mandatory scroll-pl-[120px] md:snap-none md:scroll-pl-0"
       >
         <ScrollToToday key={days} />
         <table className="w-full border-collapse">
           <thead>
             <tr>
-              <th className="sticky left-0 z-10 bg-[color:var(--surface)] text-left p-3 min-w-[130px] border-b border-[color:var(--border)]">
+              <th className="sticky left-0 z-10 bg-[color:var(--surface)] text-left p-3 min-w-[120px] border-b border-[color:var(--border)]">
                 <span className="eyebrow">Habit</span>
               </th>
               {dateCols.map((iso) => {
@@ -98,7 +99,7 @@ export default async function BoardPage({
                     key={iso}
                     data-today-col={isToday ? "" : undefined}
                     className={cn(
-                      "px-2 py-2 text-center font-semibold text-xs border-b border-[color:var(--border)] min-w-[200px] snap-center",
+                      "px-1.5 py-2 text-center font-semibold text-xs border-b border-[color:var(--border)] min-w-[calc(100vw-160px)] md:min-w-[240px] snap-start",
                       isToday && "bg-[color:var(--accent-soft)]"
                     )}
                   >
@@ -136,29 +137,34 @@ export default async function BoardPage({
                       <td
                         key={iso}
                         className={cn(
-                          "px-2 py-2 align-middle text-center",
+                          "px-1.5 py-2 align-middle text-center",
                           isToday && "bg-[color:var(--accent-soft)]"
                         )}
                       >
-                        <div className="flex justify-center gap-0.5">
+                        <div className="flex justify-center items-center gap-0.5 md:gap-1">
                           {profiles.map((p) => {
                             const checked = checkedSet.has(`${p.id}|${h.id}|${iso}`);
                             return (
                               <span
                                 key={p.id}
                                 title={`${p.name} ${checked ? "✓" : "—"} ${iso}`}
-                                className="inline-flex"
+                                className="relative inline-flex"
                               >
                                 <Avatar
                                   name={p.name}
                                   avatarUrl={p.avatar_url}
                                   color={p.color_theme}
-                                  size={28}
+                                  size={34}
                                   className={cn(
                                     "transition-opacity",
                                     checked ? "opacity-100" : "opacity-30 grayscale"
                                   )}
                                 />
+                                {checked && (
+                                  <span className="pointer-events-none absolute -bottom-0.5 right-[5px]">
+                                    <PixelCheck size={12} />
+                                  </span>
+                                )}
                               </span>
                             );
                           })}
