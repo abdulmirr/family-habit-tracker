@@ -21,12 +21,7 @@ export function PixelXpBar({ done, total, color = "indigo", label = "Daily quest
   const segmented = safeTotal > 0 && safeTotal <= 10;
 
   return (
-    <div
-      className={cn(
-        "rounded-[var(--radius-pixel)] border-2 border-[color:var(--border-strong)]",
-        "bg-[color:var(--surface)] shadow-[var(--shadow-pixel)] p-2.5"
-      )}
-    >
+    <div>
       <div className="flex items-center justify-between mb-1.5">
         <span className="pixel-eyebrow">{label}</span>
         <span className={cn("font-display text-[13px] font-semibold tabular-nums leading-none", c.text)}>

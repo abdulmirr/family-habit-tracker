@@ -59,10 +59,10 @@ export function HabitTile({ habit, profileId, profileName, onCheckChange, onBadg
       aria-pressed={checked}
       className={cn(
         "group relative w-full flex items-center gap-3 p-3 text-left",
-        "rounded-[var(--radius-pixel)] border-2 border-[color:var(--border-strong)]",
-        "bg-[color:var(--surface)] shadow-[var(--shadow-pixel)]",
-        "transition-[transform,box-shadow] duration-75",
-        "active:translate-y-[3px] active:shadow-[var(--shadow-pixel-pressed)]",
+        "rounded-[var(--radius-md)] border border-[color:var(--border)]",
+        "bg-[color:var(--surface)] shadow-[var(--shadow-xs)]",
+        "transition-[transform,box-shadow] duration-100",
+        "active:translate-y-[1px] hover:border-[color:var(--border-strong)]",
         "disabled:opacity-90",
         checked && "bg-[color:var(--surface-2)]"
       )}
@@ -73,11 +73,11 @@ export function HabitTile({ habit, profileId, profileName, onCheckChange, onBadg
         animate={checked ? { scale: [1, 1.08, 1] } : { scale: 1 }}
         transition={{ duration: 0.3 }}
         className={cn(
-          "shrink-0 w-12 h-12 rounded-[var(--radius-pixel)] flex items-center justify-center",
-          "border-2 transition-colors duration-150",
+          "shrink-0 w-12 h-12 rounded-[var(--radius-md)] flex items-center justify-center",
+          "border transition-colors duration-150",
           checked
-            ? cn(c.bg, "border-[color:var(--border-strong)]")
-            : cn(c.bgSoft, "border-[color:var(--border-strong)]")
+            ? cn(c.bg, "border-transparent")
+            : cn(c.bgSoft, "border-[color:var(--border)]")
         )}
         style={
           checked
@@ -121,11 +121,11 @@ export function HabitTile({ habit, profileId, profileName, onCheckChange, onBadg
         animate={checked ? { scale: [1, 1.18, 1] } : { scale: 1 }}
         transition={{ duration: 0.35 }}
         className={cn(
-          "relative shrink-0 w-9 h-9 rounded-[var(--radius-pixel)] flex items-center justify-center",
-          "border-2 transition-colors duration-150",
+          "relative shrink-0 w-9 h-9 rounded-[var(--radius-md)] flex items-center justify-center",
+          "border transition-colors duration-150",
           checked
-            ? cn(c.bg, "border-[color:var(--border-strong)]")
-            : "bg-[color:var(--surface)] border-[color:var(--border-strong)] group-hover:border-[color:var(--foreground)]/60"
+            ? cn(c.bg, "border-transparent")
+            : "bg-[color:var(--surface)] border-[color:var(--border)] group-hover:border-[color:var(--foreground)]/40"
         )}
         style={
           checked
@@ -137,7 +137,7 @@ export function HabitTile({ habit, profileId, profileName, onCheckChange, onBadg
           <span
             aria-hidden
             className={cn(
-              "pointer-events-none absolute inset-0 rounded-[var(--radius-pixel)] border-2 border-current animate-ripple",
+              "pointer-events-none absolute inset-0 rounded-[var(--radius-md)] border-2 border-current animate-ripple",
               c.text
             )}
           />

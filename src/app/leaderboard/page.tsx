@@ -2,7 +2,7 @@ import Link from "next/link";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import {
   getProfiles,
-  getHabitsForProfile,
+  getSharedHabits,
   getCheckInsForProfile,
 } from "@/lib/data";
 import { ConfigNotice } from "@/components/ConfigNotice";
@@ -31,12 +31,15 @@ export default async function LeaderboardPage() {
   const profiles = await getProfiles();
   const since7 = daysAgoISO(7);
 
+  // Leaderboard counts shared family habits only — personal habits don't count.
+  const habits = await getSharedHabits();
+  const sharedHabitIds = new Set(habits.map((h) => h.id));
+
   const rows: Row[] = await Promise.all(
     profiles.map(async (p) => {
-      const [habits, checkIns] = await Promise.all([
-        getHabitsForProfile(p.id),
-        getCheckInsForProfile(p.id, 365),
-      ]);
+      const checkIns = (await getCheckInsForProfile(p.id, 365)).filter((c) =>
+        sharedHabitIds.has(c.habit_id)
+      );
       const last7 = checkIns.filter((c) => c.date >= since7);
       const possible7 = habits.length * 7;
       const rate7 = possible7 === 0 ? 0 : Math.round((last7.length / possible7) * 100);

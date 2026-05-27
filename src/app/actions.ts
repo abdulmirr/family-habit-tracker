@@ -23,7 +23,7 @@ export async function toggleHabitAction(
   }
   revalidatePath(`/p/${slugify(profileName)}`);
   revalidatePath(`/p/${slugify(profileName)}/stats`);
-  revalidatePath(`/`);
+  revalidatePath(`/board`);
   revalidatePath(`/leaderboard`);
   return { newBadges };
 }
@@ -35,7 +35,7 @@ export async function createHabitAction(input: {
   owner_id: string | null;
 }) {
   const h = await createHabit(input);
-  revalidatePath("/");
+  revalidatePath("/board");
   revalidatePath("/manage");
   if (input.owner_id) {
     // We don't have profile name here; broad revalidate is fine.
@@ -45,6 +45,6 @@ export async function createHabitAction(input: {
 
 export async function deleteHabitAction(habitId: string) {
   await deactivateHabit(habitId);
-  revalidatePath("/");
+  revalidatePath("/board");
   revalidatePath("/manage");
 }

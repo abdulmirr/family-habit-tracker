@@ -2,11 +2,10 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./ThemeToggle";
 
-type Tab = "board" | "check" | "leaderboard";
+type Tab = "board" | "leaderboard";
 
 const TABS: { key: Tab; label: string; href: string }[] = [
-  { key: "board", label: "Table", href: "/board" },
-  { key: "check", label: "Check", href: "/check" },
+  { key: "board", label: "Home", href: "/board" },
   { key: "leaderboard", label: "Leaderboard", href: "/leaderboard" },
 ];
 
